@@ -1,0 +1,19 @@
+footer {
+    background: var(--accent);
+    text-align: center;
+    padding: 2rem;
+    color: var(--light);
+    font-size: 0.9rem;
+    margin-top: auto;
+    width: 100%;
+    border-top: 2px solid var(--primary);
+    font-family: var(--font-body);
+}
+
+.footer-msg {
+    margin-top: 1rem;
+    font-family: var(--font-hand);
+    font-size: 1.1rem;
+    color: var(--primary);
+    transform: rotate(-1deg);
+}

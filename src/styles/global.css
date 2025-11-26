@@ -1,0 +1,248 @@
+@import url("https://fonts.googleapis.com/css2?family=New+Rocker&family=Rock+Salt&family=Roboto:wght@300;400;700&display=swap");
+
+:root {
+    --primary: #891520;
+    --secondary: #e2e2e2;
+    --dark: #0b0d0c;
+    --accent: #390510;
+    --light: #d0cadb;
+    --sidebar-width: 260px;
+
+    --font-hand: "Rock Salt", cursive;
+    --font-display: "New Rocker", cursive;
+    --font-body: "Roboto", sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--dark);
+    color: var(--secondary);
+}
+
+#root,
+.app-root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+ul {
+    list-style: none;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(226, 226, 226, 0.1);
+    border: 2px solid var(--primary);
+    color: var(--secondary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    background: rgba(226, 226, 226, 0.2);
+    border-color: var(--light);
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 3rem;
+    background: var(--primary);
+    color: var(--secondary);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+    transition: all 0.3s ease;
+    border: 2px solid var(--primary);
+    cursor: pointer;
+    text-align: center;
+}
+
+.cta-button:hover {
+    background: transparent;
+    color: var(--primary);
+    transform: scale(1.05) rotate(-1deg);
+}
+
+.cta-button.small {
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    clip-path: none;
+}
+
+.cta-button.full {
+    width: 100%;
+    clip-path: none;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 5rem);
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 4px;
+    background: var(--primary);
+    margin: 0.5rem auto;
+    transform: rotate(-2deg);
+}
+
+.glitch {
+    font-family: var(--font-hand);
+    font-size: clamp(3rem, 12vw, 8rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
+    color: var(--secondary);
+    line-height: 1.2;
+    animation: glitch-skew 2s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--primary);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 var(--light);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip: rect(10px, 9999px, 31px, 0);
+    }
+    20% {
+        clip: rect(70px, 9999px, 71px, 0);
+    }
+    40% {
+        clip: rect(60px, 9999px, 100px, 0);
+    }
+    60% {
+        clip: rect(10px, 9999px, 80px, 0);
+    }
+    80% {
+        clip: rect(40px, 9999px, 20px, 0);
+    }
+    100% {
+        clip: rect(50px, 9999px, 90px, 0);
+    }
+}
+@keyframes glitch-anim2 {
+    0% {
+        clip: rect(65px, 9999px, 100px, 0);
+    }
+    20% {
+        clip: rect(10px, 9999px, 60px, 0);
+    }
+    40% {
+        clip: rect(80px, 9999px, 20px, 0);
+    }
+    60% {
+        clip: rect(50px, 9999px, 90px, 0);
+    }
+    80% {
+        clip: rect(30px, 9999px, 70px, 0);
+    }
+    100% {
+        clip: rect(20px, 9999px, 40px, 0);
+    }
+}
+@keyframes glitch-skew {
+    0% {
+        transform: skew(0deg);
+    }
+    10% {
+        transform: skew(-2deg);
+    }
+    20% {
+        transform: skew(0deg);
+    }
+    30% {
+        transform: skew(1deg);
+    }
+    40% {
+        transform: skew(0deg);
+    }
+    50% {
+        transform: skew(-1deg);
+    }
+    60% {
+        transform: skew(0deg);
+    }
+    70% {
+        transform: skew(2deg);
+    }
+    80% {
+        transform: skew(0deg);
+    }
+    90% {
+        transform: skew(-1deg);
+    }
+    100% {
+        transform: skew(0deg);
+    }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: revealAnim 0.8s ease forwards;
+}
+@keyframes revealAnim {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
