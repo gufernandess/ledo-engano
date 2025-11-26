@@ -20,7 +20,7 @@ export default function LoginPage() {
     <div id="login-overlay" style={{ display: "flex" }}>
       <div className="login-box">
         <h1 className="glitch" data-text="RESTRICTED">
-          RESTRICTED
+          RESTRITO
         </h1>
         <p
           style={{
@@ -66,18 +66,7 @@ export default function LoginPage() {
             borderTop: "1px solid #333",
             paddingTop: "1rem",
           }}
-        >
-          <Link
-            to="/"
-            style={{
-              color: "var(--light)",
-              fontSize: "0.9rem",
-              transition: "0.3s",
-            }}
-          >
-            ← Voltar para o Site Público
-          </Link>
-        </div>
+        ></div>
       </div>
     </div>
   );

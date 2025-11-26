@@ -1,8 +1,17 @@
-import React from "react";
+export default function AdminSidebar({
+  activeTab,
+  setActiveTab,
+  onLogout,
+  isOpen,
+  onClose,
+}) {
+  const handleNavClick = (tabName) => {
+    setActiveTab(tabName);
+    onClose();
+  };
 
-export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
       <div className="brand">
         <h2>LEDO ENGANO</h2>
         <span
@@ -21,17 +30,18 @@ export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
       <nav className="admin-nav">
         <button
           className={`nav-btn ${activeTab === "shows" ? "active" : ""}`}
-          onClick={() => setActiveTab("shows")}
+          onClick={() => handleNavClick("shows")}
         >
           🎤 Gerenciar Shows
         </button>
 
         <button
           className={`nav-btn ${activeTab === "discography" ? "active" : ""}`}
-          onClick={() => setActiveTab("discography")}
+          onClick={() => handleNavClick("discography")}
         >
           💿 Discografia
         </button>
+
         <button className="nav-btn logout" onClick={onLogout}>
           🚪 Sair
         </button>

@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Admin.css";
+import { FiMenu } from "react-icons/fi";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import SectionTitle from "../components/common/SectionTitle";
 import ShowCard from "../components/ui/ShowCard";
+import "./Admin.css";
 
 export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("shows");
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const closeSidebar = () => setIsSidebarOpen(false);
 
   const handleLogout = () => navigate("/admin");
 
@@ -29,22 +36,27 @@ export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
 
   return (
     <div className="admin-container">
+      <button className="menu-toggle-btn" onClick={toggleSidebar}>
+        <FiMenu size={24} color="var(--primary)" />
+      </button>
+
+      {isSidebarOpen && (
+        <div className="sidebar-overlay" onClick={closeSidebar}></div>
+      )}
+
       <AdminSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onLogout={handleLogout}
+        isOpen={isSidebarOpen}
+        onClose={closeSidebar}
       />
 
       <main className="content">
         {activeTab === "shows" && (
           <section className="tab-content active">
             <SectionTitle>Gerenciar Shows</SectionTitle>
-
-            <form
-              onSubmit={handleAddShow}
-              className="admin-form"
-              style={{ marginBottom: "2rem" }}
-            >
+            <form onSubmit={handleAddShow} className="admin-form">
               <div
                 style={{
                   display: "grid",
@@ -58,7 +70,6 @@ export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
                 <button className="cta-button small">+</button>
               </div>
             </form>
-
             <div className="shows-list-admin">
               {shows.map((show) => (
                 <ShowCard
@@ -71,11 +82,9 @@ export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
             </div>
           </section>
         )}
-
         {activeTab === "discography" && (
           <div className="tab-content active">
             <SectionTitle>Gerenciar Discografia</SectionTitle>
-            <p>Implemente o CRUD de álbuns aqui seguindo o padrão acima.</p>
           </div>
         )}
       </main>
