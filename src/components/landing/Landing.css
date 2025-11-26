@@ -2,6 +2,7 @@ section {
     min-height: 100vh;
     padding: 6rem 2rem 4rem;
 }
+
 #members {
     background: linear-gradient(180deg, var(--dark) 0%, var(--accent) 100%);
 }
@@ -20,8 +21,7 @@ section {
     justify-content: center;
     align-items: center;
     position: relative;
-    padding: 2rem;
-
+    padding: 8rem 2rem 2rem 2rem;
     background-image: url("../../assets/hero-bg.png");
     background-size: cover;
     background-position: center;
@@ -35,41 +35,84 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
-
-    background: rgba(11, 13, 12, 0.75);
-
-    pointer-events: none;
+    background: rgba(11, 13, 12, 0.8);
     z-index: 0;
+    pointer-events: none;
 }
+
 .hero-content {
     position: relative;
     z-index: 1;
     text-align: center;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content .glitch {
+    margin: 0;
+    line-height: 1.1;
+    margin-bottom: 1rem;
 }
 
 .tagline {
     font-family: var(--font-hand);
-    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
     color: var(--primary);
-    margin-top: 1.5rem;
-    margin-bottom: 2.5rem;
-    transform: rotate(-2deg);
     text-shadow: 2px 2px 0px #000;
+    margin-top: 2.5rem;
+    margin-bottom: 5rem;
+    transform: rotate(-3deg);
+    width: fit-content;
+}
+
+.hero-content .cta-button {
+    min-width: 250px;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .tagline {
+        margin-top: 2rem;
+        margin-bottom: 3.5rem;
+    }
 }
 
 .members-grid,
-.albums-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+.contact-content {
+    width: 100%;
     max-width: 1400px;
     margin: 0 auto;
 }
 
-.shows-container,
 .contact-content {
     max-width: 900px;
-    margin: 0 auto;
+}
+
+.members-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.shows-carousel,
+.albums-grid {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 2rem 1rem;
+    width: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.shows-carousel::-webkit-scrollbar,
+.albums-grid::-webkit-scrollbar {
+    display: none;
 }
 
 .social-links {
@@ -78,9 +121,10 @@ section {
     gap: 2rem;
     margin-bottom: 3rem;
 }
+
 .social-link {
-    font-size: 2rem;
-    color: var(--primary);
+    font-size: 1.8rem;
+    color: var(--secondary);
     border: 2px solid var(--primary);
     width: 60px;
     height: 60px;
@@ -98,17 +142,26 @@ section {
         0% 80%,
         0% 20%
     );
-    font-family: var(--font-display);
 }
+
 .social-link:hover {
     background: var(--primary);
     color: var(--secondary);
     transform: rotate(15deg) scale(1.1);
 }
 
-@media (max-width: 768px) {
-    .members-grid,
+@media (min-width: 768px) {
+    .members-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .members-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+    }
+    .shows-carousel,
     .albums-grid {
-        grid-template-columns: 1fr;
+        justify-content: center;
     }
 }
