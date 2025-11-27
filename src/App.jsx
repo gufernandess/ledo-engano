@@ -11,7 +11,7 @@ function App() {
   const [albums, setAlbums] = useState(initialAlbums);
 
   return (
-    <Router basename="/ledo-engano">
+    <Router>
       <div className="app-root">
         <Routes>
           <Route
