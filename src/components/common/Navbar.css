@@ -22,7 +22,6 @@
     padding: 0 2rem;
 }
 
-
 .nav-logo {
     color: var(--primary);
     font-size: 1.8rem;
@@ -32,7 +31,6 @@
 
     display: none;
 }
-
 
 .nav-menu {
     display: flex;
@@ -44,7 +42,6 @@
 .nav-item {
     margin: 0 1rem;
 }
-
 
 .nav-links {
     color: var(--secondary);
@@ -66,7 +63,6 @@
     text-shadow: 0 0 10px rgba(137, 21, 32, 0.5);
 }
 
-
 .nav-links::before {
     content: "";
     position: absolute;
@@ -82,7 +78,6 @@
 .nav-links:hover::before {
     width: 100%;
 }
-
 
 .login-link {
     color: var(--primary);
@@ -104,7 +99,6 @@
         font-size: 1.5rem;
     }
 
-
     .menu-icon {
         display: block;
         position: absolute;
@@ -117,7 +111,6 @@
         z-index: 1001;
     }
 
-
     .nav-menu {
         display: flex;
         flex-direction: column;
@@ -128,7 +121,6 @@
         left: -100%;
         opacity: 0;
         transition: all 0.4s ease-in-out;
-
 
         background: var(--accent);
 
@@ -144,7 +136,6 @@
         justify-content: center;
         padding-top: 80px;
     }
-
 
     .nav-menu.active {
         left: 0;
@@ -170,7 +161,8 @@
         background-color: rgba(137, 21, 32, 0.2);
         transform: skew(-5deg);
 
-    .nav-links::before {
-        display: none;
+        .nav-links::before {
+            display: none;
+        }
     }
 }
