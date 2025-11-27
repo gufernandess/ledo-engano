@@ -1,50 +1,79 @@
-import React from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
 import "./Navbar.css";
 
 export default function Navbar() {
-  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
 
+  const location = useLocation();
   const isHome = location.pathname === "/";
 
-  const getLink = (id) => (isHome ? id : `/${id}`);
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  const closeMobileMenu = () => setIsOpen(false);
+
+  const getPageLink = (id) => {
+    return isHome ? id : `/${id}`;
+  };
 
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
+    <nav className="navbar">
+      <div className="navbar-container">
+        <div className="menu-icon" onClick={toggleMenu}>
+          {isOpen ? <FaTimes /> : <FaBars />}
+        </div>
 
-        <li>
-          <a href={getLink("#members")}>Membros</a>
-        </li>
+        <ul className={isOpen ? "nav-menu active" : "nav-menu"}>
+          <li className="nav-item">
+            <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+              Home
+            </Link>
+          </li>
 
-        <li>
-          <a href={getLink("#shows")}>Shows</a>
-        </li>
+          <li className="nav-item">
+            <a
+              href={getPageLink("#members")}
+              className="nav-links"
+              onClick={closeMobileMenu}
+            >
+              Membros
+            </a>
+          </li>
 
-        <li>
-          <a href={getLink("#discography")}>Discografia</a>
-        </li>
+          <li className="nav-item">
+            <a
+              href={getPageLink("#shows")}
+              className="nav-links"
+              onClick={closeMobileMenu}
+            >
+              Shows
+            </a>
+          </li>
 
-        <li>
-          <a href={getLink("#contact")}>Contatos</a>
-        </li>
+          <li className="nav-item">
+            <a
+              href={getPageLink("#discography")}
+              className="nav-links"
+              onClick={closeMobileMenu}
+            >
+              Discografia
+            </a>
+          </li>
 
-        <li>
-          <Link
-            to="/admin"
-            style={{
-              color: "var(--primary)",
-              fontWeight: "bold",
-              borderBottom: "1px solid transparent",
-            }}
-          >
-            Login
-          </Link>
-        </li>
-      </ul>
+          <li className="nav-item">
+            <a
+              href={getPageLink("#contact")}
+              className="nav-links"
+              onClick={closeMobileMenu}
+            >
+              Contatos
+            </a>
+          </li>
+
+          <li className="nav-item"></li>
+        </ul>
+      </div>
     </nav>
   );
 }

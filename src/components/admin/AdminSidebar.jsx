@@ -22,9 +22,7 @@ export default function AdminSidebar({
             color: "var(--light)",
             marginTop: "5px",
           }}
-        >
-          ADMIN AREA
-        </span>
+        ></span>
       </div>
 
       <nav className="admin-nav">

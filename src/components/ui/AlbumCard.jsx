@@ -1,51 +1,51 @@
 import "./Cards.css";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 export default function AlbumCard({
+  id,
   title,
   year,
+  cover,
   tracks,
   isAdmin,
   onDelete,
   onEdit,
 }) {
-  const trackList = Array.isArray(tracks)
-    ? tracks
-    : tracks.split(",").map((t) => t.trim());
-
   return (
-    <div className="album-card reveal">
-      <div className="album-cover">
-        <div className="album-title">
-          {title.split(" ").map((word, i) => (
-            <div key={i}>{word}</div>
-          ))}
-        </div>
+    <div className="album-card">
+      <div
+        className="album-cover"
+        style={{ backgroundImage: `url(${cover})`, backgroundSize: "cover" }}
+      >
+        {!cover && title}
       </div>
 
       <div className="album-info">
         <h3 className="album-name">{title}</h3>
         <p className="album-year">{year}</p>
 
-        <ul className="album-tracks">
-          {trackList.map((track, i) => (
-            <li key={i}>{track}</li>
-          ))}
-        </ul>
-
+        {tracks && tracks.length > 0 && (
+          <ul className="album-tracks">
+            {tracks.map((track, index) => (
+              <li key={index}>{track}</li>
+            ))}
+          </ul>
+        )}
         {isAdmin && (
-          <div
-            className="admin-actions"
-            style={{
-              marginTop: "1rem",
-              borderTop: "1px solid #444",
-              paddingTop: "0.5rem",
-            }}
-          >
-            <button className="action-btn btn-edit" onClick={onEdit}>
-              Editar
+          <div className="admin-actions">
+            <button
+              className="action-btn btn-edit"
+              onClick={onEdit}
+              title="Editar Álbum"
+            >
+              <FiEdit2 /> Editar
             </button>
-            <button className="action-btn btn-delete" onClick={onDelete}>
-              Remover
+            <button
+              className="action-btn btn-delete"
+              onClick={onDelete}
+              title="Excluir Álbum"
+            >
+              <FiTrash2 /> Excluir
             </button>
           </div>
         )}
