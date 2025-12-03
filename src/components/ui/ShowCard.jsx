@@ -14,11 +14,7 @@ export default function ShowCard({
       <div className="show-venue">{venue}</div>
       <div className="show-time">{time}</div>
 
-      {!isAdmin ? (
-        <a href="#" className="show-button">
-          Comprar Ingressos
-        </a>
-      ) : (
+      {isAdmin ? (
         <div className="admin-actions">
           <button className="action-btn btn-edit" onClick={onEdit}>
             Editar
@@ -27,7 +23,7 @@ export default function ShowCard({
             X
           </button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -1,6 +1,29 @@
 import SectionTitle from "../common/SectionTitle";
 import MemberCard from "../ui/MemberCard";
-import { members } from "../../data/mockData";
+
+const members = [
+  {
+    name: "MATHEUS",
+    instrument: "Vocal",
+    img: null,
+  },
+  {
+    name: "FLAVIO",
+    instrument: "Guitarra",
+    img: null,
+  },
+  {
+    name: "ADDNY",
+    instrument: "Baixo",
+    img: null,
+  },
+  { name: "VICTOR", instrument: "Bateria", img: null },
+  {
+    name: "THAIS",
+    instrument: "Teclado",
+    img: null,
+  },
+];
 
 export default function Members() {
   return (

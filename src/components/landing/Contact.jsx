@@ -1,50 +1,62 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import SectionTitle from "../common/SectionTitle";
 import { FaInstagram, FaSpotify, FaSoundcloud } from "react-icons/fa";
-
 import Toast from "../ui/Toast";
+import emailjs from "@emailjs/browser";
 
 export default function Contact() {
   const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState(null);
 
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/SEU_CODIGO_AQUI";
+  const formRef = useRef();
+
+  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const formData = new FormData(e.target);
+    const now = new Date();
+    const formattedTime = now.toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
-    const data = Object.fromEntries(formData.entries());
+    const timeInput = document.createElement("input");
+    timeInput.type = "hidden";
+    timeInput.name = "time";
+    timeInput.value = formattedTime;
+    formRef.current.appendChild(timeInput);
 
     try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      const result = await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        EMAILJS_PUBLIC_KEY,
+      );
 
-      if (response.ok) {
-        setToast({
-          type: "success",
-          message: "🤘 Mensagem enviada! Entraremos em contato em breve.",
-        });
-        e.target.reset();
-      } else {
-        throw new Error("Erro no envio");
-      }
+      console.log("Email enviado com sucesso:", result.text);
+
+      setToast({
+        type: "success",
+        message: "🤘 Mensagem enviada! Entraremos em contato em breve.",
+      });
+      e.target.reset();
     } catch (error) {
+      console.error("Erro ao enviar email:", error.text);
       setToast({
         type: "error",
-        message: "❌ Ops! Erro ao enviar. Tente novamente.",
+        message: "❌ Ops! Erro ao enviar pelo EmailJS. Tente novamente.",
       });
-      console.error("Erro de formulário:", error);
     } finally {
       setIsLoading(false);
+      formRef.current.removeChild(timeInput);
     }
   };
 
@@ -101,20 +113,12 @@ export default function Contact() {
         </div>
 
         <div className="contact-form">
-          <form onSubmit={handleSubmit}>
+          <form ref={formRef} onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="email" style={labelStyle}>
-                Seu E-mail
+              <label htmlFor="name" style={labelStyle}>
+                Seu Nome
               </label>
-
-              <input type="email" id="email" name="email" required />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="subject" style={labelStyle}>
-                Assunto
-              </label>
-              <input type="text" id="subject" name="subject" required />
+              <input type="text" id="name" name="name" required />
             </div>
 
             <div className="form-group">

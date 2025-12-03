@@ -1,25 +1,57 @@
 import { useState } from "react";
 import "./Admin.css";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Toast from "../components/ui/Toast";
+import { auth } from "../firebase/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginPage() {
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [toast, setToast] = useState(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (user === "admin" && password === "1234") {
+    setIsLoggingIn(true);
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+
       navigate("/admin/dashboard");
-    } else {
-      alert("Acesso Negado! Tente:\nUsuário: admin\nSenha: 1234");
+    } catch (error) {
+      console.error("Erro no login:", error.code, error.message);
+
+      let errorMessage = "Falha ao acessar. Verifique seus dados.";
+
+      if (error.code === "auth/invalid-credential") {
+        errorMessage = "E-mail ou senha incorretos.";
+      } else if (error.code === "auth/too-many-requests") {
+        errorMessage = "Muitas tentativas. Tente novamente mais tarde.";
+      }
+
+      setToast({
+        type: "error",
+        message: `❌ ${errorMessage}`,
+      });
+      setIsLoggingIn(false);
     }
   };
 
   return (
     <div id="login-overlay" style={{ display: "flex" }}>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       <div className="login-box">
-        <h1 className="glitch" data-text="RESTRICTED">
+        <h1 className="glitch" data-text="RESTRITO">
           RESTRITO
         </h1>
         <p
@@ -37,10 +69,10 @@ export default function LoginPage() {
         <form onSubmit={handleLogin}>
           <div style={{ marginBottom: "1rem" }}>
             <input
-              type="text"
-              placeholder="Usuário (admin)"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
+              type="email"
+              placeholder="E-mail de acesso"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -48,18 +80,21 @@ export default function LoginPage() {
           <div style={{ marginBottom: "2rem" }}>
             <input
               type="password"
-              placeholder="Senha (1234)"
+              placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-
-          <button type="submit" className="cta-button full">
-            Acessar Sistema
+          <button
+            type="submit"
+            className="cta-button full"
+            disabled={isLoggingIn}
+            style={{ opacity: isLoggingIn ? 0.7 : 1 }}
+          >
+            {isLoggingIn ? "Acessando..." : "Acessar Sistema"}
           </button>
         </form>
-
         <div
           style={{
             marginTop: "2rem",

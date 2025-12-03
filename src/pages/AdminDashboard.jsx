@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import AdminSidebar from "../components/admin/AdminSidebar";
@@ -12,27 +12,44 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ptBR from "date-fns/locale/pt-BR";
 import "./Admin.css";
+import { useShows } from "../hooks/useShows";
+import Toast from "../components/ui/Toast";
+import { useAlbums } from "../hooks/useAlbums";
 
 registerLocale("pt-BR", ptBR);
 
-export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
+export default function AdminDashboard() {
   const navigate = useNavigate();
+  const {
+    shows,
+    loading: showsLoading,
+    error: showsError,
+    addShow,
+    deleteShow,
+    updateShow,
+  } = useShows();
+  const {
+    albums,
+    loading: albumsLoading,
+    error: albumsError,
+    addAlbum,
+    deleteAlbum,
+    updateAlbum,
+  } = useAlbums();
 
   const [activeTab, setActiveTab] = useState("shows");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [showToDeleteId, setShowToDeleteId] = useState(null);
   const [showToEdit, setShowToEdit] = useState(null);
-
   const [newAlbumTitle, setNewAlbumTitle] = useState("");
   const [newAlbumYear, setNewAlbumYear] = useState("");
   const [newAlbumCover, setNewAlbumCover] = useState("");
   const [newAlbumTracksStr, setNewAlbumTracksStr] = useState("");
-
   const [albumToDeleteId, setAlbumToDeleteId] = useState(null);
   const [albumToEdit, setAlbumToEdit] = useState(null);
+  const [toast, setToast] = useState(null);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const closeSidebar = () => setIsSidebarOpen(false);
@@ -43,93 +60,130 @@ export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
     time
       ? time.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
       : "";
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
-  const handleAddShow = (e) => {
+  const handleAddShow = async (e) => {
     e.preventDefault();
     const venueInput = e.target.venue.value;
     if (!selectedDate || !selectedTime || !venueInput) {
-      alert("Preencha todos os campos!");
+      showToast("Preencha todos os campos!", "error");
       return;
     }
-    const newShow = {
-      id: Date.now(),
+    const newShowData = {
       date: formatDateToString(selectedDate),
       venue: venueInput,
       time: formatTimeToString(selectedTime),
     };
-    setShows([...shows, newShow]);
-    e.target.reset();
-    setSelectedDate(null);
-    setSelectedTime(null);
+    try {
+      await addShow(newShowData);
+      showToast("Show adicionado com sucesso!");
+      e.target.reset();
+      setSelectedDate(null);
+      setSelectedTime(null);
+    } catch (error) {
+      showToast("Erro ao adicionar show.", error);
+    }
   };
 
   const promptDeleteShow = (id) => setShowToDeleteId(id);
-  const confirmDeleteShow = () => {
+  const confirmDeleteShow = async () => {
     if (showToDeleteId) {
-      setShows(shows.filter((s) => s.id !== showToDeleteId));
-      setShowToDeleteId(null);
+      try {
+        await deleteShow(showToDeleteId);
+        showToast("Show deletado com sucesso!");
+      } catch (error) {
+        showToast("Erro ao deletar show.", error);
+      } finally {
+        setShowToDeleteId(null);
+      }
     }
   };
 
   const promptEditShow = (show) => setShowToEdit(show);
-  const handleSaveEditShow = (updatedShow) => {
-    setShows(shows.map((s) => (s.id === updatedShow.id ? updatedShow : s)));
-    setShowToEdit(null);
+  const handleSaveEditShow = async (updatedShow) => {
+    try {
+      const { id, ...dataToUpdate } = updatedShow;
+      await updateShow(id, dataToUpdate);
+      showToast("Show atualizado com sucesso!");
+      setShowToEdit(null);
+    } catch (error) {
+      showToast("Erro ao atualizar show.", error);
+    }
   };
 
-  const handleAddAlbum = (e) => {
+  const handleAddAlbum = async (e) => {
     e.preventDefault();
     if (!newAlbumTitle || !newAlbumYear) {
-      alert("Título e Ano são obrigatórios!");
+      showToast("Título e Ano são obrigatórios!");
       return;
     }
-
     const tracksArray = newAlbumTracksStr
       .split("\n")
       .filter((line) => line.trim() !== "");
-
-    const newAlbum = {
-      id: Date.now(),
+    const newAlbumData = {
       title: newAlbumTitle,
       year: newAlbumYear,
       cover: newAlbumCover || null,
       tracks: tracksArray,
     };
-
-    setAlbums([...albums, newAlbum]);
-
-    setNewAlbumTitle("");
-    setNewAlbumYear("");
-    setNewAlbumCover("");
-    setNewAlbumTracksStr("");
+    try {
+      await addAlbum(newAlbumData);
+      showToast("Álbum adicionado com sucesso!");
+      setNewAlbumTitle("");
+      setNewAlbumYear("");
+      setNewAlbumCover("");
+      setNewAlbumTracksStr("");
+    } catch (error) {
+      showToast("Erro ao adicionar álbum.", error);
+    }
   };
 
   const promptDeleteAlbum = (id) => setAlbumToDeleteId(id);
-
   const cancelDelete = () => {
     setShowToDeleteId(null);
     setAlbumToDeleteId(null);
   };
-
-  const confirmDeleteAlbum = () => {
+  const confirmDeleteAlbum = async () => {
     if (albumToDeleteId) {
-      setAlbums(albums.filter((a) => a.id !== albumToDeleteId));
-      setAlbumToDeleteId(null);
+      try {
+        await deleteAlbum(albumToDeleteId);
+        showToast("Álbum deletado com sucesso!");
+      } catch (error) {
+        showToast("Erro ao deletar álbum.", error);
+      } finally {
+        setAlbumToDeleteId(null);
+      }
     }
   };
-  const promptEditAlbum = (album) => setAlbumToEdit(album);
 
+  const promptEditAlbum = (album) => setAlbumToEdit(album);
   const cancelEdit = () => {
     setShowToEdit(null);
     setAlbumToEdit(null);
   };
-
-  const handleSaveEditAlbum = (updatedAlbum) => {
-    setAlbums(albums.map((a) => (a.id === updatedAlbum.id ? updatedAlbum : a)));
-    setAlbumToEdit(null);
+  const handleSaveEditAlbum = async (updatedAlbum) => {
+    try {
+      const { id, ...dataToUpdate } = updatedAlbum;
+      await updateAlbum(id, dataToUpdate);
+      showToast("Álbum atualizado com sucesso!");
+      setAlbumToEdit(null);
+    } catch (error) {
+      showToast("Erro ao atualizar álbum.", error);
+    }
   };
+
   return (
     <div className="admin-container">
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <ConfirmationModal
         isOpen={!!showToDeleteId || !!albumToDeleteId}
         onClose={cancelDelete}
@@ -153,6 +207,7 @@ export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
         onClose={cancelEdit}
         onSave={handleSaveEditAlbum}
       />
+
       <button className="menu-toggle-btn" onClick={toggleSidebar}>
         <FiMenu size={24} color="var(--primary)" />
       </button>
@@ -166,6 +221,7 @@ export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
 
       <main className="content">
         <div className="sidebar-overlay" onClick={closeSidebar}></div>
+
         {activeTab === "shows" && (
           <section className="tab-content active">
             <SectionTitle>Gerenciar Shows</SectionTitle>
@@ -208,19 +264,34 @@ export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
                 <button className="cta-button small">+</button>
               </div>
             </form>
-            <div className="shows-list-admin">
-              {shows.map((show) => (
-                <ShowCard
-                  key={show.id}
-                  {...show}
-                  isAdmin={true}
-                  onDelete={() => promptDeleteShow(show.id)}
-                  onEdit={() => promptEditShow(show)}
-                />
-              ))}
-            </div>
+            {showsLoading && (
+              <p style={{ color: "var(--light)" }}>
+                Carregando shows do banco de dados...
+              </p>
+            )}
+            {showsError && <p style={{ color: "red" }}>Erro: {showsError}</p>}
+            {!showsLoading && !showsError && (
+              <div className="shows-list-admin">
+                {shows.length === 0 ? (
+                  <p style={{ color: "var(--light)" }}>
+                    Nenhum show cadastrado.
+                  </p>
+                ) : (
+                  shows.map((show) => (
+                    <ShowCard
+                      key={show.id}
+                      {...show}
+                      isAdmin={true}
+                      onDelete={() => promptDeleteShow(show.id)}
+                      onEdit={() => promptEditShow(show)}
+                    />
+                  ))
+                )}
+              </div>
+            )}
           </section>
         )}
+
         {activeTab === "discography" && (
           <section className="tab-content active">
             <SectionTitle>Gerenciar Discografia</SectionTitle>
@@ -291,17 +362,31 @@ export default function AdminDashboard({ shows, setShows, albums, setAlbums }) {
                 </button>
               </div>
             </form>
-            <div className="shows-list-admin">
-              {albums.map((album) => (
-                <AlbumCard
-                  key={album.id}
-                  {...album}
-                  isAdmin={true}
-                  onDelete={() => promptDeleteAlbum(album.id)}
-                  onEdit={() => promptEditAlbum(album)}
-                />
-              ))}
-            </div>
+            {albumsLoading && (
+              <p style={{ color: "var(--light)" }}>
+                Carregando álbuns do banco de dados...
+              </p>
+            )}
+            {albumsError && <p style={{ color: "red" }}>Erro: {albumsError}</p>}
+            {!albumsLoading && !albumsError && (
+              <div className="shows-list-admin">
+                {albums.length === 0 ? (
+                  <p style={{ color: "var(--light)" }}>
+                    Nenhum álbum cadastrado.
+                  </p>
+                ) : (
+                  albums.map((album) => (
+                    <AlbumCard
+                      key={album.id}
+                      {...album}
+                      isAdmin={true}
+                      onDelete={() => promptDeleteAlbum(album.id)}
+                      onEdit={() => promptEditAlbum(album)}
+                    />
+                  ))
+                )}
+              </div>
+            )}
           </section>
         )}
       </main>

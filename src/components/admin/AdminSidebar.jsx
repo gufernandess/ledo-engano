@@ -1,13 +1,29 @@
+import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase/config";
+import { signOut } from "firebase/auth";
+import { FiLogOut } from "react-icons/fi";
+
 export default function AdminSidebar({
   activeTab,
   setActiveTab,
-  onLogout,
+
   isOpen,
   onClose,
 }) {
+  const navigate = useNavigate();
+
   const handleNavClick = (tabName) => {
     setActiveTab(tabName);
     onClose();
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/admin");
+    } catch (error) {
+      console.error("Erro ao sair: ", error);
+    }
   };
 
   return (
@@ -40,8 +56,9 @@ export default function AdminSidebar({
           💿 Discografia
         </button>
 
-        <button className="nav-btn logout" onClick={onLogout}>
-          🚪 Sair
+        <button className="nav-btn logout" onClick={handleLogout}>
+          <FiLogOut style={{ marginRight: "8px" }} />
+          Sair
         </button>
       </nav>
     </aside>
