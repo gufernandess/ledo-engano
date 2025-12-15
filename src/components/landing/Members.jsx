@@ -1,27 +1,31 @@
 import SectionTitle from "../common/SectionTitle";
 import MemberCard from "../ui/MemberCard";
+import matheusPic from "../../assets/images/matheus.jpeg";
+import flavioPic from "../../assets/images/flavio.jpeg";
+import addnyPic from "../../assets/images/addny.jpeg";
+import thaisPic from "../../assets/images/thais.jpeg";
 
 const members = [
   {
     name: "MATHEUS",
     instrument: "Vocal",
-    img: null,
+    img: matheusPic,
   },
   {
     name: "FLAVIO",
     instrument: "Guitarra",
-    img: null,
+    img: flavioPic,
   },
   {
     name: "ADDNY",
     instrument: "Baixo",
-    img: null,
+    img: addnyPic,
   },
   { name: "VICTOR", instrument: "Bateria", img: null },
   {
     name: "THAIS",
     instrument: "Teclado",
-    img: null,
+    img: thaisPic,
   },
 ];
 

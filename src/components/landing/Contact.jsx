@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import SectionTitle from "../common/SectionTitle";
-import { FaInstagram, FaSpotify, FaSoundcloud } from "react-icons/fa";
+import { FaInstagram, FaYoutube } from "react-icons/fa";
 import Toast from "../ui/Toast";
 import emailjs from "@emailjs/browser";
 
@@ -84,31 +84,22 @@ export default function Contact() {
       <div className="contact-content">
         <div className="social-links">
           <a
-            href="https://instagram.com/ledoenganoband"
+            href="https://www.youtube.com/@BandaLedoEngano"
+            target="_blank"
+            rel="noreferrer"
+            className="social-link"
+            aria-label="YouTube"
+          >
+            <FaYoutube />
+          </a>
+          <a
+            href="https://www.instagram.com/ledoenganoband/"
             target="_blank"
             rel="noreferrer"
             className="social-link"
             aria-label="Instagram"
           >
             <FaInstagram />
-          </a>
-          <a
-            href="#"
-            target="_blank"
-            rel="noreferrer"
-            className="social-link"
-            aria-label="Spotify"
-          >
-            <FaSpotify />
-          </a>
-          <a
-            href="#"
-            target="_blank"
-            rel="noreferrer"
-            className="social-link"
-            aria-label="SoundCloud"
-          >
-            <FaSoundcloud />
           </a>
         </div>
 
