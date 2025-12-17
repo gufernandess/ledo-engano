@@ -12,7 +12,7 @@ const members = [
     img: matheusPic,
   },
   {
-    name: "FLAVIO",
+    name: "FLÁVIO",
     instrument: "Guitarra",
     img: flavioPic,
   },
@@ -23,7 +23,7 @@ const members = [
   },
   { name: "VICTOR", instrument: "Bateria", img: null },
   {
-    name: "THAIS",
+    name: "THAÍS",
     instrument: "Teclado",
     img: thaisPic,
   },
