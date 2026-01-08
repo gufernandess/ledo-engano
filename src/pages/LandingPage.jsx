@@ -32,7 +32,7 @@ export default function LandingPage() {
       )}
       {!showsLoading && !showsError && <Shows showsData={shows} />}
 
-      {albumsLoading && (
+      {/* {albumsLoading && (
         <p
           style={{
             color: "var(--light)",
@@ -48,7 +48,7 @@ export default function LandingPage() {
           Erro ao carregar discografia.
         </p>
       )}
-      {!albumsLoading && !albumsError && <Discography albumsData={albums} />}
+      {!albumsLoading && !albumsError && <Discography albumsData={albums} />}*/}
 
       <Contact />
       <Footer />

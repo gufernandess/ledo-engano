@@ -51,7 +51,7 @@ export default function Navbar() {
             </a>
           </li>
 
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <a
               href={getPageLink("#discography")}
               className="nav-links"
@@ -59,7 +59,7 @@ export default function Navbar() {
             >
               Discografia
             </a>
-          </li>
+          </li>*/}
 
           <li className="nav-item">
             <a

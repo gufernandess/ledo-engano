@@ -59,7 +59,7 @@
 }
 
 .member-card {
-    background: rgba(226, 226, 226, 0.05);
+    background: rgba(137, 21, 32, 0.4);
     border: 2px solid var(--primary);
     clip-path: polygon(0 0, 100% 0, 100% 85%, 90% 100%, 0 100%);
     overflow: hidden;
