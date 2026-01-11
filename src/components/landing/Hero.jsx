@@ -6,7 +6,7 @@ export default function Hero() {
           LEDO <br />
           ENGANO
         </h1>
-        <p className="tagline">Punk Rock desde 2020</p>
+        <p className="tagline">Punk Rock desde 2023</p>
         <a href="#members" className="cta-button">
           Conheça a Banda
         </a>
