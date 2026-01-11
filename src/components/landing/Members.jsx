@@ -4,6 +4,7 @@ import matheusPic from "../../assets/images/matheus.jpeg";
 import flavioPic from "../../assets/images/flavio.jpeg";
 import addnyPic from "../../assets/images/addny.jpeg";
 import thaisPic from "../../assets/images/thais.jpeg";
+import victorPic from "../../assets/images/victor.jpeg";
 
 const members = [
   {
@@ -21,7 +22,7 @@ const members = [
     instrument: "Baixo",
     img: addnyPic,
   },
-  { name: "VICTOR", instrument: "Bateria", img: null },
+  { name: "VICTOR", instrument: "Bateria", img: victorPic },
   {
     name: "THAÍS",
     instrument: "Teclado",

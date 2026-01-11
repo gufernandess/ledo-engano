@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=New+Rocker&family=Rock+Salt&family=Roboto:wght@300;400;700&display=swap");
 
+@font-face {
+    font-family: "LedoLedo";
+    src: url("../assets/fonts/LedoLedo.otf") format("opentype");
+    font-weight: bold;
+    font-style: normal;
+}
+
 :root {
     --primary: #891520;
     --secondary: #e2e2e2;
@@ -9,7 +16,7 @@
     --sidebar-width: 260px;
 
     --font-hand: "Rock Salt", cursive;
-    --font-display: "New Rocker", cursive;
+    --font-display: "LedoLedo", sans-serif;
     --font-body: "Roboto", sans-serif;
 }
 
@@ -20,6 +27,9 @@
 }
 
 body {
+    font-family: var(--font-body);
+    background: var(--dark);
+    color: var(--secondary);
     width: 100%;
     overflow-x: hidden;
 }
@@ -28,12 +38,6 @@ html {
     width: 100%;
     overflow-x: hidden;
     scroll-behavior: smooth;
-}
-
-body {
-    font-family: var(--font-body);
-    background-color: var(--dark);
-    color: var(--secondary);
 }
 
 #root,

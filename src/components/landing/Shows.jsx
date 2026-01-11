@@ -29,6 +29,7 @@ export default function Shows({ showsData }) {
             date={show.date}
             venue={show.venue}
             time={show.time}
+            image={show.image} /* <--- Adicionado aqui */
             isAdmin={false}
           />
         ))}

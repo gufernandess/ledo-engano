@@ -1,25 +1,27 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import SectionTitle from "../components/common/SectionTitle";
 import ShowCard from "../components/ui/ShowCard";
-import AlbumCard from "../components/ui/AlbumCard";
+// import AlbumCard from "../components/ui/AlbumCard"; // COMENTADO: Discografia
 import ConfirmationModal from "../components/ui/ConfirmationModal";
 import EditShowModal from "../components/admin/EditShowModal";
-import EditAlbumModal from "../components/admin/EditAlbumModal";
+// import EditAlbumModal from "../components/admin/EditAlbumModal"; // COMENTADO: Discografia
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ptBR from "date-fns/locale/pt-BR";
 import "./Admin.css";
 import { useShows } from "../hooks/useShows";
 import Toast from "../components/ui/Toast";
-import { useAlbums } from "../hooks/useAlbums";
+// import { useAlbums } from "../hooks/useAlbums"; // COMENTADO: Discografia
 
 registerLocale("pt-BR", ptBR);
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+
+  // --- HOOKS DE SHOWS ---
   const {
     shows,
     loading: showsLoading,
@@ -28,6 +30,8 @@ export default function AdminDashboard() {
     deleteShow,
     updateShow,
   } = useShows();
+
+  /* --- COMENTADO: HOOKS DE ÁLBUNS ---
   const {
     albums,
     loading: albumsLoading,
@@ -36,59 +40,78 @@ export default function AdminDashboard() {
     deleteAlbum,
     updateAlbum,
   } = useAlbums();
+  */
 
   const [activeTab, setActiveTab] = useState("shows");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  // --- STATES PARA SHOWS ---
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [showImage, setShowImage] = useState(""); // NOVO: Estado para a imagem do show
   const [showToDeleteId, setShowToDeleteId] = useState(null);
   const [showToEdit, setShowToEdit] = useState(null);
+
+  /* --- COMENTADO: STATES PARA ÁLBUNS ---
   const [newAlbumTitle, setNewAlbumTitle] = useState("");
   const [newAlbumYear, setNewAlbumYear] = useState("");
   const [newAlbumCover, setNewAlbumCover] = useState("");
   const [newAlbumTracksStr, setNewAlbumTracksStr] = useState("");
   const [albumToDeleteId, setAlbumToDeleteId] = useState(null);
   const [albumToEdit, setAlbumToEdit] = useState(null);
-  const [toast, setToast] = useState(null);
+  */
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const closeSidebar = () => setIsSidebarOpen(false);
   const handleLogout = () => navigate("/admin");
+
   const formatDateToString = (date) =>
     date ? date.toLocaleDateString("pt-BR") : "";
+
   const formatTimeToString = (time) =>
     time
       ? time.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
       : "";
+
   const showToast = (message, type = "success") => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
   };
 
+  // --- HANDLERS DE SHOWS ---
   const handleAddShow = async (e) => {
     e.preventDefault();
     const venueInput = e.target.venue.value;
+
     if (!selectedDate || !selectedTime || !venueInput) {
-      showToast("Preencha todos os campos!", "error");
+      showToast("Preencha data, hora e local!", "error");
       return;
     }
+
     const newShowData = {
       date: formatDateToString(selectedDate),
       venue: venueInput,
       time: formatTimeToString(selectedTime),
+      image: showImage || null, // NOVO: Envia a imagem ou null se estiver vazio
     };
+
     try {
       await addShow(newShowData);
       showToast("Show adicionado com sucesso!");
+
+      // Resetar form
       e.target.reset();
       setSelectedDate(null);
       setSelectedTime(null);
+      setShowImage(""); // Resetar imagem
     } catch (error) {
       showToast("Erro ao adicionar show.", error);
     }
   };
 
   const promptDeleteShow = (id) => setShowToDeleteId(id);
+
   const confirmDeleteShow = async () => {
     if (showToDeleteId) {
       try {
@@ -103,6 +126,7 @@ export default function AdminDashboard() {
   };
 
   const promptEditShow = (show) => setShowToEdit(show);
+
   const handleSaveEditShow = async (updatedShow) => {
     try {
       const { id, ...dataToUpdate } = updatedShow;
@@ -114,6 +138,7 @@ export default function AdminDashboard() {
     }
   };
 
+  /* --- COMENTADO: HANDLERS DE ÁLBUNS ---
   const handleAddAlbum = async (e) => {
     e.preventDefault();
     if (!newAlbumTitle || !newAlbumYear) {
@@ -142,10 +167,7 @@ export default function AdminDashboard() {
   };
 
   const promptDeleteAlbum = (id) => setAlbumToDeleteId(id);
-  const cancelDelete = () => {
-    setShowToDeleteId(null);
-    setAlbumToDeleteId(null);
-  };
+
   const confirmDeleteAlbum = async () => {
     if (albumToDeleteId) {
       try {
@@ -160,10 +182,12 @@ export default function AdminDashboard() {
   };
 
   const promptEditAlbum = (album) => setAlbumToEdit(album);
+
   const cancelEdit = () => {
     setShowToEdit(null);
     setAlbumToEdit(null);
   };
+
   const handleSaveEditAlbum = async (updatedAlbum) => {
     try {
       const { id, ...dataToUpdate } = updatedAlbum;
@@ -173,6 +197,15 @@ export default function AdminDashboard() {
     } catch (error) {
       showToast("Erro ao atualizar álbum.", error);
     }
+  };
+  */
+
+  // Handler genérico para cancelar (usado no modal de show)
+  const cancelAction = () => {
+    setShowToDeleteId(null);
+    setShowToEdit(null);
+    // setAlbumToDeleteId(null);
+    // setAlbumToEdit(null);
   };
 
   return (
@@ -184,33 +217,42 @@ export default function AdminDashboard() {
           onClose={() => setToast(null)}
         />
       )}
+
+      {/* Modal de Confirmação de Exclusão */}
       <ConfirmationModal
-        isOpen={!!showToDeleteId || !!albumToDeleteId}
-        onClose={cancelDelete}
-        onConfirm={showToDeleteId ? confirmDeleteShow : confirmDeleteAlbum}
-        title={showToDeleteId ? "Excluir Show" : "Excluir Álbum"}
+        isOpen={!!showToDeleteId /* || !!albumToDeleteId */}
+        onClose={cancelAction}
+        onConfirm={
+          showToDeleteId ? confirmDeleteShow : () => {} /* confirmDeleteAlbum */
+        }
+        title={showToDeleteId ? "Excluir Show" : "Excluir Item"}
         message={
           showToDeleteId
             ? "Tem certeza que deseja apagar este show? Essa ação é irreversível."
-            : "Tem certeza que deseja apagar este álbum e suas faixas? Essa ação é irreversível."
+            : "" // "Tem certeza que deseja apagar este álbum..."
         }
       />
+
+      {/* Modal de Edição de Show */}
       <EditShowModal
         isOpen={!!showToEdit}
         showToEdit={showToEdit}
-        onClose={cancelEdit}
+        onClose={cancelAction}
         onSave={handleSaveEditShow}
       />
-      <EditAlbumModal
+
+      {/* <EditAlbumModal
         isOpen={!!albumToEdit}
         albumToEdit={albumToEdit}
-        onClose={cancelEdit}
+        onClose={cancelAction}
         onSave={handleSaveEditAlbum}
       />
+      */}
 
       <button className="menu-toggle-btn" onClick={toggleSidebar}>
         <FiMenu size={24} color="var(--primary)" />
       </button>
+
       <AdminSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -225,7 +267,20 @@ export default function AdminDashboard() {
         {activeTab === "shows" && (
           <section className="tab-content active">
             <SectionTitle>Gerenciar Shows</SectionTitle>
+
             <form onSubmit={handleAddShow} className="admin-form">
+              {/* NOVO: Input para URL da Imagem - Coloquei acima para ocupar largura */}
+              <div style={{ marginBottom: "10px" }}>
+                <input
+                  type="url"
+                  placeholder="URL da Imagem do Show (https://...)"
+                  value={showImage}
+                  onChange={(e) => setShowImage(e.target.value)}
+                  className="datepicker-input"
+                  style={{ width: "100%", boxSizing: "border-box" }}
+                />
+              </div>
+
               <div className="admin-form-row">
                 <div className="custom-datepicker-wrapper">
                   <DatePicker
@@ -264,12 +319,14 @@ export default function AdminDashboard() {
                 <button className="cta-button small">+</button>
               </div>
             </form>
+
             {showsLoading && (
               <p style={{ color: "var(--light)" }}>
                 Carregando shows do banco de dados...
               </p>
             )}
             {showsError && <p style={{ color: "red" }}>Erro: {showsError}</p>}
+
             {!showsLoading && !showsError && (
               <div className="shows-list-admin">
                 {shows.length === 0 ? (
@@ -281,6 +338,7 @@ export default function AdminDashboard() {
                     <ShowCard
                       key={show.id}
                       {...show}
+                      // image={show.image} // Já é passado pelo spread {...show}
                       isAdmin={true}
                       onDelete={() => promptDeleteShow(show.id)}
                       onEdit={() => promptEditShow(show)}
@@ -292,103 +350,12 @@ export default function AdminDashboard() {
           </section>
         )}
 
-        {activeTab === "discography" && (
+        {/* {activeTab === "discography" && (
           <section className="tab-content active">
-            <SectionTitle>Gerenciar Discografia</SectionTitle>
-            <form
-              onSubmit={handleAddAlbum}
-              className="admin-form"
-              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-            >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "3fr 1fr",
-                  gap: "10px",
-                }}
-              >
-                <input
-                  type="text"
-                  placeholder="Título do Álbum"
-                  value={newAlbumTitle}
-                  onChange={(e) => setNewAlbumTitle(e.target.value)}
-                  required
-                  className="datepicker-input"
-                  style={{ height: "50px", margin: 0 }}
-                />
-                <input
-                  type="text"
-                  placeholder="Ano"
-                  value={newAlbumYear}
-                  onChange={(e) => setNewAlbumYear(e.target.value)}
-                  required
-                  className="datepicker-input"
-                  style={{ height: "50px", margin: 0 }}
-                />
-              </div>
-              <input
-                type="url"
-                placeholder="URL da Imagem da Capa (https://...)"
-                value={newAlbumCover}
-                onChange={(e) => setNewAlbumCover(e.target.value)}
-                className="datepicker-input"
-                style={{ height: "50px", margin: 0, width: "100%" }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  alignItems: "flex-start",
-                }}
-              >
-                <textarea
-                  placeholder="Lista de Faixas (Uma por linha)"
-                  value={newAlbumTracksStr}
-                  onChange={(e) => setNewAlbumTracksStr(e.target.value)}
-                  className="datepicker-input"
-                  style={{
-                    height: "100px",
-                    resize: "vertical",
-                    flexGrow: 1,
-                    margin: 0,
-                    paddingTop: "10px",
-                  }}
-                />
-                <button
-                  className="cta-button small"
-                  style={{ height: "100px", margin: 0 }}
-                >
-                  +
-                </button>
-              </div>
-            </form>
-            {albumsLoading && (
-              <p style={{ color: "var(--light)" }}>
-                Carregando álbuns do banco de dados...
-              </p>
-            )}
-            {albumsError && <p style={{ color: "red" }}>Erro: {albumsError}</p>}
-            {!albumsLoading && !albumsError && (
-              <div className="shows-list-admin">
-                {albums.length === 0 ? (
-                  <p style={{ color: "var(--light)" }}>
-                    Nenhum álbum cadastrado.
-                  </p>
-                ) : (
-                  albums.map((album) => (
-                    <AlbumCard
-                      key={album.id}
-                      {...album}
-                      isAdmin={true}
-                      onDelete={() => promptDeleteAlbum(album.id)}
-                      onEdit={() => promptEditAlbum(album)}
-                    />
-                  ))
-                )}
-              </div>
-            )}
+             ... TODO O CONTEÚDO DE DISCOGRAFIA FOI OCULTADO ...
           </section>
         )}
+        */}
       </main>
     </div>
   );

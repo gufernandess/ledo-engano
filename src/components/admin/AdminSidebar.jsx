@@ -49,12 +49,12 @@ export default function AdminSidebar({
           🎤 Gerenciar Shows
         </button>
 
-        <button
+        {/* <button
           className={`nav-btn ${activeTab === "discography" ? "active" : ""}`}
           onClick={() => handleNavClick("discography")}
         >
           💿 Discografia
-        </button>
+        </button>*/}
 
         <button className="nav-btn logout" onClick={handleLogout}>
           <FiLogOut style={{ marginRight: "8px" }} />
