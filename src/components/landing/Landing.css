@@ -56,9 +56,95 @@ section {
     width: fit-content;
 }
 
-.hero-content .cta-button {
+/* SELETORES AGRUPADOS: Aplica tanto no Hero quanto no Contato */
+.hero-content .cta-button,
+.contact-form .cta-button {
+    /* Mantém propriedades básicas */
     min-width: 250px;
     font-size: 1.5rem;
+    position: relative;
+    color: white;
+    background-color: var(--primary); /* Vermelho original */
+    border: 3px solid #000;
+    font-weight: bold;
+    cursor: pointer;
+
+    /* AS RASURAS CAÓTICAS (O mesmo padrão de antes) */
+    background-image:
+        linear-gradient(
+            115deg,
+            transparent 30%,
+            rgba(0, 0, 0, 0.9) 30%,
+            rgba(0, 0, 0, 0.9) 32%,
+            transparent 32%
+        ),
+        linear-gradient(
+            105deg,
+            transparent 40%,
+            rgba(0, 0, 0, 0.5) 40%,
+            rgba(0, 0, 0, 0.6) 55%,
+            transparent 55%
+        ),
+        linear-gradient(
+            65deg,
+            transparent 70%,
+            rgba(0, 0, 0, 0.8) 70%,
+            rgba(0, 0, 0, 0.8) 72%,
+            transparent 72%
+        ),
+        linear-gradient(120deg, rgba(0, 0, 0, 0.9) 10%, transparent 10%),
+        linear-gradient(
+            110deg,
+            transparent 80%,
+            rgba(0, 0, 0, 0.7) 80%,
+            rgba(0, 0, 0, 0.7) 81%,
+            transparent 81%,
+            rgba(0, 0, 0, 0.7) 83%,
+            transparent 83%
+        ),
+        linear-gradient(to bottom, transparent 80%, rgba(0, 0, 0, 0.4) 100%);
+
+    /* Recorte irregular */
+    clip-path: polygon(2% 0, 100% 0, 98% 100%, 0% 95%);
+
+    /* Transição travada */
+    transition: all 0.1s steps(2);
+    box-shadow: 0px 0px 0px #000;
+}
+
+/* HOVER para ambos os botões */
+.hero-content .cta-button:hover,
+.contact-form .cta-button:hover {
+    background-position: -20px 15px; /* Move as rasuras */
+    transform: scale(1.02) rotate(-1deg); /* Leve ajuste na escala para não estourar layout no mobile */
+    box-shadow: 8px 8px 0px #000; /* Sombra dura */
+    color: #000;
+    text-shadow: none;
+}
+
+/* ACTIVE (Click) para ambos */
+.hero-content .cta-button:active,
+.contact-form .cta-button:active {
+    transform: scale(0.98) rotate(0deg);
+    box-shadow: 2px 2px 0px #000;
+    background-position: 10px -5px;
+}
+
+/* Ajuste específico para quando o botão tem a classe 'full' (no formulário) */
+.cta-button.full {
+    width: 100%;
+    /* No formulário, o clip-path pode cortar demais se não ajustarmos levemente */
+    clip-path: polygon(1% 0, 100% 0, 99% 100%, 0% 98%);
+}
+
+/* Estado de loading (Desabilitado) */
+.contact-form .cta-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+    /* Remove a animação de hover quando estiver carregando */
+    transform: none !important;
+    box-shadow: none !important;
+    color: white !important;
 }
 
 @media (max-width: 768px) {
