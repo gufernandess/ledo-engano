@@ -2,7 +2,6 @@
     position: fixed;
     top: 0;
     width: 100%;
-    /* Alterado de 0.95 para 0.8 para dar mais transparência */
     background: rgba(11, 13, 12, 0.8);
     backdrop-filter: blur(10px);
     z-index: 1000;
@@ -67,13 +66,20 @@
 .nav-links::before {
     content: "";
     position: absolute;
-    bottom: 0;
+    bottom: -8px;
     left: 0;
     width: 0;
-    height: 3px;
-    background: var(--primary);
-    transition: width 0.3s ease;
-    transform: rotate(-1deg);
+    height: 18px;
+
+    background-color: var(--primary);
+
+    -webkit-mask-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M5 8 Q 30 5 50 7 T 95 6' stroke='black' stroke-width='1.5' fill='none' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M2 12 Q 40 10 60 12 T 98 11' stroke='black' stroke-width='3' fill='none' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M8 15 Q 35 14 55 15 T 92 14' stroke='black' stroke-width='3' fill='none' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M5 8 Q 30 5 50 7 T 95 6' stroke='black' stroke-width='1.5' fill='none' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M2 12 Q 40 10 60 12 T 98 11' stroke='black' stroke-width='3' fill='none' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M8 15 Q 35 14 55 15 T 92 14' stroke='black' stroke-width='3' fill='none' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
 }
 
 .nav-links:hover::before {
