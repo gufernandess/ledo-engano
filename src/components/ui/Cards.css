@@ -410,3 +410,51 @@ section {
         justify-content: center;
     }
 }
+
+@media (max-width: 480px) {
+    .show-card {
+        width: 260px;
+        height: 380px;
+        padding: 1.2rem;
+        border-radius: 18px;
+    }
+
+    .show-date {
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .show-venue {
+        font-size: 1.1rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .show-time {
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .shows-carousel {
+        gap: 1.2rem;
+        padding: 1.5rem 0.5rem;
+    }
+
+    /* Diminuir o botão principal do Hero */
+    .cta-button {
+        min-width: 200px; /* Reduzido de 250px */
+        font-size: 1.1rem; /* Reduzido de 1.5rem */
+        padding: 0.8rem 1.5rem;
+    }
+
+    /* Diminuir o botão dentro dos cards de shows */
+    .show-button {
+        padding: 0.7rem 0; /* Reduzido de 1rem */
+        font-size: 1rem; /* Reduzido de 1.2rem */
+    }
+
+    /* Caso use botões de admin nos cards, também convém ajustar */
+    .action-btn {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+}

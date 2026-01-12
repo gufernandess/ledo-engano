@@ -15,9 +15,7 @@ export default function Members() {
             rock autoral que une influências de post-punk, grunge e hardcore.
             Formado por Flávio, Adnny e Thais, o grupo foca no fortalecimento da
             presença feminina e em uma identidade visual e temática inspirada no
-            cinema de terror e na moda punk. O objetivo central da banda é
-            expandir seu alcance regional através de composições próprias que
-            equilibram energia, melancolia e crítica social.
+            cinema de terror e na moda punk.
           </p>
         </div>
 

@@ -1,6 +1,7 @@
 import Navbar from "../components/common/Navbar";
 import Hero from "../components/landing/Hero";
 import Members from "../components/landing/Members";
+import BandVideo from "../components/landing/BandVideo";
 import Shows from "../components/landing/Shows";
 import Footer from "../components/common/Footer";
 import "../components/landing/Landing.css";
@@ -19,6 +20,7 @@ export default function LandingPage() {
       <Navbar />
       <Hero />
       <Members />
+      <BandVideo />
 
       {showsLoading && (
         <p style={{ color: "var(--light)", textAlign: "center" }}>
